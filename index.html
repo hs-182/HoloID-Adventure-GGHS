@@ -690,11 +690,11 @@ function update() {
 
     // Karakter lain tetap memakai fungsi skill mereka dan tidak otomatis membunuh musuh.
     if (!isSkillActive && checkCollision(p, obs)) {
-        handleHit("💥 Game Over! Menabrak Besi Runcing!");
+        handleHit("💥 Game Over! nabrak Rintangan!");
     }
 
     if (!isSkillActive && boss.active && checkCollision(p, boss)) {
-        handleHit("👾 Game Over! Ditangkap Musuh Utama (" + cur.enemyName + ")!");
+        handleHit("👾 Game Over! Terkena musuh! (" + cur.enemyName + ")!");
     }
 
     const btnSkill = document.getElementById("btnSkillTouch");
