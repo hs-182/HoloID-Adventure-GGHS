@@ -1229,7 +1229,7 @@ const HOLO_EXCHANGE_COST = {
     uncommon:15,
     rare: 50,
     epic: 250,
-    secret: 500
+    secret: 1000
 };
 
 let holoCurrentAnimation = null;
@@ -1412,12 +1412,12 @@ function holoTopupDiamond() {
         return;
     }
     if (holoGachaDiamonds >= MAX_DIAMOND) {
-        alert("💎 Diamond sudah mencapai maksimum 100.000.000!");
+        alert("💎 Diamond sudah mencapai batas maksimum!");
         input.value = "";
         return;
     }
     if (holoGachaDiamonds + amount > MAX_DIAMOND) {
-        alert("💎 Diamond tidak boleh lebih dari 100.000.000!");
+        alert("💎 Diamond melebihi batas maksimum!");
         return;
     }
     holoGachaDiamonds += amount;
