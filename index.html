@@ -2495,5 +2495,114 @@ document.addEventListener('DOMContentLoaded', function(){
   }
 });
 </script>
+    <script>
+/* =========================================
+   PRELOAD SEMUA GAMBAR GACHA
+   ========================================= */
+
+const holoPreloadedImages = {};
+
+function preloadHoloImage(src) {
+    return new Promise((resolve) => {
+
+        if (!src) {
+            resolve(false);
+            return;
+        }
+
+        // Sudah pernah berhasil di-load
+        if (holoPreloadedImages[src]) {
+            resolve(true);
+            return;
+        }
+
+        const img = new Image();
+
+        img.onload = function () {
+            holoPreloadedImages[src] = true;
+            resolve(true);
+        };
+
+        img.onerror = function () {
+            console.warn("Gagal load gambar:", src);
+            resolve(false);
+        };
+
+        img.src = src;
+    });
+}
+
+
+async function preloadAllHoloGachaImages() {
+
+    if (typeof holoGachaSkins === "undefined") {
+        console.warn("holoGachaSkins belum tersedia.");
+        return;
+    }
+
+    const imageList = [];
+
+    // Ambil SEMUA karakter
+    Object.keys(holoGachaSkins).forEach(character => {
+
+        const skins = holoGachaSkins[character];
+
+        if (!skins) return;
+
+        // Ambil SEMUA rarity
+        Object.keys(skins).forEach(rarity => {
+
+            const skin = skins[rarity];
+
+            if (
+                skin &&
+                skin.image &&
+                !imageList.includes(skin.image)
+            ) {
+                imageList.push(skin.image);
+            }
+
+        });
+
+    });
+
+    console.log(
+        "HOLO-ID: memuat",
+        imageList.length,
+        "gambar skin..."
+    );
+
+    // Load semuanya bersamaan
+    await Promise.all(
+        imageList.map(src => preloadHoloImage(src))
+    );
+
+    console.log(
+        "HOLO-ID: semua gambar Gacha selesai diproses."
+    );
+
+    // Setelah selesai → mulai preview
+    if (typeof startHoloGachaPreview === "function") {
+        startHoloGachaPreview();
+    }
+}
+
+
+/* =========================================
+   MULAI SETELAH HTML SELESAI
+   ========================================= */
+
+window.addEventListener("load", function () {
+
+    // Tunggu sebentar supaya data skin
+    // sudah tersedia
+    setTimeout(() => {
+
+        preloadAllHoloGachaImages();
+
+    }, 500);
+
+});
+    </script>
 </body>
 </html>
